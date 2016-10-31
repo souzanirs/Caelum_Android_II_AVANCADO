@@ -21,6 +21,7 @@ public class BuscaMaisPublicacoesTask extends AsyncTask<Pagina, Void, List<Publi
     private BuscaMaisPublicacoesDelegate delegate;
 
     public BuscaMaisPublicacoesTask(BuscaMaisPublicacoesDelegate delegate) {
+
         this.delegate = delegate;
         this.delegate .getCarangosApplication().registra(this);
     }
