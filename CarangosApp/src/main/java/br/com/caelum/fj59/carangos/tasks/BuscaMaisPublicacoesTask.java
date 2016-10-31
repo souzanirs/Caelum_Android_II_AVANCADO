@@ -18,10 +18,11 @@ import br.com.caelum.fj59.carangos.webservice.WebClient;
 public class BuscaMaisPublicacoesTask extends AsyncTask<Pagina, Void, List<Publicacao>> {
 
     private Exception erro;
-    private MainActivity activity;
+    private BuscaMaisPublicacoesDelegate delegate;
 
-    public BuscaMaisPublicacoesTask(MainActivity activity) {
-        this.activity = activity;
+    public BuscaMaisPublicacoesTask(BuscaMaisPublicacoesDelegate delegate) {
+        this.delegate = delegate;
+        this.delegate .getCarangosApplication().registra(this);
     }
 
     @Override
@@ -34,7 +35,9 @@ public class BuscaMaisPublicacoesTask extends AsyncTask<Pagina, Void, List<Publi
             List<Publicacao> publicacoesRecebidas = new PublicacaoConverter().converte(jsonDeResposta);
 
             return publicacoesRecebidas;
+
         } catch (Exception e) {
+
             this.erro = e;
             return null;
         }
@@ -42,12 +45,12 @@ public class BuscaMaisPublicacoesTask extends AsyncTask<Pagina, Void, List<Publi
 
     @Override
     protected void onPostExecute(List<Publicacao> retorno) {
-        MyLog.i("RETORNO OBTIDO!" + retorno);
 
         if (retorno!=null) {
-            this.activity.atualizaListaCom(retorno);
+            delegate.lidaComRetorno(retorno);
         } else {
-            Toast.makeText(this.activity, "Erro na busca dos dados", Toast.LENGTH_SHORT).show();
+            delegate.lidaComErro(erro);
         }
+        delegate.getCarangosApplication().desregistra(this);
     }
 }
