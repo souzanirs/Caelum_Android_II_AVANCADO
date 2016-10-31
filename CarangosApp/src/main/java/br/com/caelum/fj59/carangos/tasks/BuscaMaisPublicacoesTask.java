@@ -6,6 +6,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import br.com.caelum.fj59.carangos.activity.MainActivity;
+import br.com.caelum.fj59.carangos.app.CarangosApplication;
 import br.com.caelum.fj59.carangos.converter.PublicacaoConverter;
 import br.com.caelum.fj59.carangos.infra.MyLog;
 import br.com.caelum.fj59.carangos.modelo.Publicacao;
@@ -18,12 +19,13 @@ import br.com.caelum.fj59.carangos.webservice.WebClient;
 public class BuscaMaisPublicacoesTask extends AsyncTask<Pagina, Void, List<Publicacao>> {
 
     private Exception erro;
-    private BuscaMaisPublicacoesDelegate delegate;
+    private CarangosApplication application;
 
-    public BuscaMaisPublicacoesTask(BuscaMaisPublicacoesDelegate delegate) {
+    public BuscaMaisPublicacoesTask(CarangosApplication application) {
 
-        this.delegate = delegate;
-        this.delegate .getCarangosApplication().registra(this);
+        this.application = application;
+        application.registra(this);
+
     }
 
     @Override
@@ -48,10 +50,10 @@ public class BuscaMaisPublicacoesTask extends AsyncTask<Pagina, Void, List<Publi
     protected void onPostExecute(List<Publicacao> retorno) {
 
         if (retorno!=null) {
-            delegate.lidaComRetorno(retorno);
+
         } else {
-            delegate.lidaComErro(erro);
+
         }
-        delegate.getCarangosApplication().desregistra(this);
+
     }
 }

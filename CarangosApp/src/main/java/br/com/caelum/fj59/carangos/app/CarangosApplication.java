@@ -39,5 +39,4 @@ public class CarangosApplication extends Application {
         return publicacoes;
     }
 
-
 }
