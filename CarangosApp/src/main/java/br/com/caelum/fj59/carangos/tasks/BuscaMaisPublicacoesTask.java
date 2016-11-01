@@ -3,11 +3,13 @@ package br.com.caelum.fj59.carangos.tasks;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.List;
 
 import br.com.caelum.fj59.carangos.activity.MainActivity;
 import br.com.caelum.fj59.carangos.app.CarangosApplication;
 import br.com.caelum.fj59.carangos.converter.PublicacaoConverter;
+import br.com.caelum.fj59.carangos.evento.EventoPublicacoesRecebidas;
 import br.com.caelum.fj59.carangos.infra.MyLog;
 import br.com.caelum.fj59.carangos.modelo.Publicacao;
 import br.com.caelum.fj59.carangos.webservice.Pagina;
@@ -48,12 +50,11 @@ public class BuscaMaisPublicacoesTask extends AsyncTask<Pagina, Void, List<Publi
 
     @Override
     protected void onPostExecute(List<Publicacao> retorno) {
-
         if (retorno!=null) {
-
+            EventoPublicacoesRecebidas.notifica(this.application, (Serializable) retorno, true);
         } else {
-
+            EventoPublicacoesRecebidas.notifica(this.application, erro, false);
         }
-
+        this.application.desregistra(this);
     }
 }

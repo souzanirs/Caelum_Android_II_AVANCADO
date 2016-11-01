@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import br.com.caelum.fj59.carangos.R;
 import br.com.caelum.fj59.carangos.app.CarangosApplication;
+import br.com.caelum.fj59.carangos.evento.EventoPublicacoesRecebidas;
 import br.com.caelum.fj59.carangos.fragments.ListaDePublicacoesFragment;
 import br.com.caelum.fj59.carangos.fragments.ProgressFragment;
 import br.com.caelum.fj59.carangos.infra.MyLog;
@@ -17,9 +18,12 @@ import br.com.caelum.fj59.carangos.tasks.BuscaMaisPublicacoesTask;
 
 public class MainActivity extends ActionBarActivity implements BuscaMaisPublicacoesDelegate{
 
-
     private EstadoMainActivity estado;
     private static final String ESTADO_ATUAL = "ESTADO ATUAL";
+    private List<Publicacao> publicacoes;
+
+    //Guardando o evento como atributo
+    private EventoPublicacoesRecebidas evento;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +31,9 @@ public class MainActivity extends ActionBarActivity implements BuscaMaisPublicac
         setContentView(R.layout.main);
 
         this.estado = EstadoMainActivity.INICIO;
+
+        //Primeiro registrando a Activity como Observador
+        this.evento = EventoPublicacoesRecebidas.registraObservador(this);
     }
 
     @Override
@@ -58,10 +65,6 @@ public class MainActivity extends ActionBarActivity implements BuscaMaisPublicac
         this.estado.executa(this);
     }
 
-    /*public List<Publicacao> getPublicacoes() {
-        return this.publicacoes;
-    }*/
-
     @Override
     public void lidaComRetorno(List<Publicacao> resultado) {
 
@@ -87,6 +90,13 @@ public class MainActivity extends ActionBarActivity implements BuscaMaisPublicac
     }
 
     public void buscaPublicacoes(){
-        new BuscaMaisPublicacoesTask(this).execute();
+        new BuscaMaisPublicacoesTask(getCarangosApplication()).execute();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        this.evento.desregistra(getCarangosApplication());
     }
 }
