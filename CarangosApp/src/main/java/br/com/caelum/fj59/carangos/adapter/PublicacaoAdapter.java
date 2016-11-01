@@ -9,15 +9,16 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 import java.util.List;
-
 import br.com.caelum.fj59.carangos.R;
 import br.com.caelum.fj59.carangos.modelo.Publicacao;
 
 /**
  * Created by erich on 7/16/13.
  */
+
 public class PublicacaoAdapter extends BaseAdapter {
     private Context context;
     private final List<Publicacao> publicacoes;
@@ -58,7 +59,15 @@ public class PublicacaoAdapter extends BaseAdapter {
         mensagem.setText(publicacao.getMensagem());
         nomeAutor.setText(publicacao.getAutor().getNome());
 
-        foto.setImageDrawable(this.context.getResources().getDrawable(R.drawable.ic_car));
+        //foto.setImageDrawable(this.context.getResources().getDrawable(R.drawable.ic_car)); //Trocamos, exercicio 4.3
+
+        progress.setVisibility(View.VISIBLE);
+
+        Picasso.with(this.context)
+                .load(publicacao.getFoto())
+                .fit()
+                .centerCrop()
+                .into(foto, new VerificadorDeRetorno(new ViewHolder(linha)));
 
         int idImagem = 0;
         switch (publicacao.getEstadoDeHumor()) {
@@ -95,6 +104,25 @@ public class PublicacaoAdapter extends BaseAdapter {
             this.mensagem = (TextView) view.findViewById(R.id.mensagem);
             this.nomeAutor = (TextView) view.findViewById(R.id.nome_autor);
             this.progress = (ProgressBar) view.findViewById(R.id.progress);
+        }
+    }
+
+    class VerificadorDeRetorno implements Callback{
+
+        private ViewHolder holder;
+
+        public VerificadorDeRetorno(ViewHolder holder){
+            this.holder = holder;
+        }
+
+        @Override
+        public void onSuccess() {
+            holder.progress.setVisibility(View.GONE);
+        }
+
+        @Override
+        public void onError() {
+
         }
     }
 }

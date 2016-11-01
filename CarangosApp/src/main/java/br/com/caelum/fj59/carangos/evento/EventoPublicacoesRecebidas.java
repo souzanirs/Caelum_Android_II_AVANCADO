@@ -20,9 +20,9 @@ import br.com.caelum.fj59.carangos.tasks.BuscaMaisPublicacoesDelegate;
 
 public class EventoPublicacoesRecebidas extends BroadcastReceiver {
 
-    private static final String RETORNO = "retorno";
-    private static final String SUCESSO = "sucesso";
-    private static final String PUBLICACOES_RECEBIDAS = "publicações recebidas";
+    private static final String RETORNO = "RETORNO";
+    private static final String SUCESSO = "SUCESSO";
+    private static final String PUBLICACOES_RECEBIDAS = "PUBLICAÇÕES RECEBIDAS";
     private BuscaMaisPublicacoesDelegate delegate;
 
     @Override
