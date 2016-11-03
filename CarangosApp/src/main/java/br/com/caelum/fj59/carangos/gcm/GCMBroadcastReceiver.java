@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import br.com.caelum.fj59.carangos.R;
+import br.com.caelum.fj59.carangos.activity.LeilaoActivity;
 import br.com.caelum.fj59.carangos.activity.MainActivity;
 import br.com.caelum.fj59.carangos.infra.MyLog;
 
@@ -20,13 +21,12 @@ public class GCMBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        MyLog.i("CHEGOU A MENSAGEM DO GCM!");
 
         String mensagem = (String) intent.getExtras().getSerializable("message");
 
         MyLog.i("----->>> MENSAGEM COM CONTEUDO: "+mensagem);
 
-        Intent irParaLeilao = new Intent(context, MainActivity.class);
+        Intent irParaLeilao = new Intent(context, LeilaoActivity.class);
 
         PendingIntent acaoPendente = PendingIntent.getActivity(context, 123, irParaLeilao, PendingIntent.FLAG_CANCEL_CURRENT);
 
@@ -37,6 +37,7 @@ public class GCMBroadcastReceiver extends BroadcastReceiver {
                 .setContentText("Leilão: "+mensagem)
                 .setSmallIcon(R.drawable.ic_launcher)
                 .setContentIntent(acaoPendente)
+                .setAutoCancel(true)
                 .build();
 
         NotificationManager manager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);

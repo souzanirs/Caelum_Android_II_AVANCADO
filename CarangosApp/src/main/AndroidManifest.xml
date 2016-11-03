@@ -20,6 +20,7 @@
         android:icon="@drawable/ic_camaro"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+
         <activity
             android:name="br.com.caelum.fj59.carangos.activity.MainActivity"
             android:label="@string/app_name" >
@@ -28,6 +29,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activity.LeilaoActivity"
+            android:label="Lista de Leilões"/>
 
         <receiver
             android:name="br.com.caelum.fj59.carangos.gcm.GCMBroadcastReceiver"
