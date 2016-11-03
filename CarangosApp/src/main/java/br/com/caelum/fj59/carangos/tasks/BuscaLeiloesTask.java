@@ -8,6 +8,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Handler;
 
+import br.com.caelum.fj59.carangos.app.CarangosApplication;
 import br.com.caelum.fj59.carangos.infra.MyLog;
 import br.com.caelum.fj59.carangos.webservice.WebClient;
 
@@ -19,6 +20,7 @@ public class BuscaLeiloesTask extends TimerTask{
 
     private CustomHandler handler;
     private Calendar horarioUltimaBusca;
+    private CarangosApplication application;
 
     public BuscaLeiloesTask(CustomHandler handler, Calendar horarioUltimaBusca){
         this.horarioUltimaBusca = horarioUltimaBusca;
@@ -29,8 +31,8 @@ public class BuscaLeiloesTask extends TimerTask{
     public void run() {
 
         MyLog.i("----->>> EFETUANDO BUSCA!");
-        WebClient client = new WebClient("leilao/leilaoid54635"+
-                                new SimpleDateFormat("ddMMyy-HHmmss").format(horarioUltimaBusca.getTime()));
+        WebClient client = new WebClient("leilao/leilaoid54635/"+
+                                new SimpleDateFormat("ddMMyy-HHmmss").format(horarioUltimaBusca.getTime()), application);
 
         String json = client.get();
 
@@ -44,7 +46,7 @@ public class BuscaLeiloesTask extends TimerTask{
     }
 
     public void executa(){
-
         Timer timer = new Timer();
+        timer.schedule(this, 0, 30*1000);
     }
 }

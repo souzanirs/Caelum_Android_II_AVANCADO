@@ -38,6 +38,6 @@ public class LeilaoActivity extends ActionBarActivity {
 
         CustomHandler handler = new CustomHandler(adapter, lancesAgora);
 
-        new BuscaLeiloesTask(horarioUltimaBusca).executa();
+        new BuscaLeiloesTask(handler, horarioUltimaBusca).executa();
     }
 }
